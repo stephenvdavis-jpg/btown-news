@@ -303,9 +303,18 @@
         
         const photos = ["https://i.imgur.com/lXwsig9.jpeg", "https://i.imgur.com/ffiROwc.jpeg", "https://i.imgur.com/ltClfhe.jpeg", "https://i.imgur.com/fTB60RV.jpeg", "https://i.imgur.com/N9I1hWL.jpeg", "https://i.imgur.com/rn2S8Gu.jpeg", "https://i.imgur.com/ULNeXgC.jpeg", "https://i.imgur.com/s9c8WSY.jpeg", "https://i.imgur.com/swzH4dR.jpeg", "https://i.imgur.com/8wPo8Xi.jpeg", "https://i.imgur.com/cxKQTuh.jpeg", "https://i.imgur.com/36bWtGd.jpeg", "https://i.imgur.com/Br2SgOz.jpeg", "https://i.imgur.com/nRl43oN.jpeg", "https://i.imgur.com/wQcPTVV.jpeg", "https://i.imgur.com/6zxKwE5.jpeg", "https://i.imgur.com/7RBrl63.jpeg", "https://i.imgur.com/ww0sPBi.jpeg", "https://i.imgur.com/7xLiZFz.jpeg", "https://i.imgur.com/tOlDwRr.jpeg", "https://i.imgur.com/5QRegKo.jpeg", "https://i.imgur.com/ZtlxJCB.jpeg", "https://i.imgur.com/nFQWJpv.jpeg", "https://i.imgur.com/2rhwYgm.jpeg", "https://i.imgur.com/96GEb9L.jpeg", "https://i.imgur.com/tOfu0tw.jpeg", "https://i.imgur.com/VZ9m0kM.jpeg", "https://i.imgur.com/6fuLl22.jpeg", "https://i.imgur.com/RJMxNQ5.jpeg", "https://i.imgur.com/tQ2Rw8g.jpeg", "https://i.imgur.com/hrbhcH1.jpeg", "https://i.imgur.com/Cm6SosY.jpeg", "https://i.imgur.com/zaZ4ylg.jpeg", "https://i.imgur.com/hlkN4Or.jpeg", "https://i.imgur.com/S36qRAl.jpeg", "https://i.imgur.com/kyXbkDK.jpeg", "https://i.imgur.com/q2dkuOP.jpeg", "https://i.imgur.com/u1ztCw2.jpeg", "https://i.imgur.com/FCEF1Dz.jpeg", "https://i.imgur.com/95yQrdt.jpeg", "https://i.imgur.com/79Qo5Mt.jpeg", "https://i.imgur.com/3dILV52.jpeg", "https://i.imgur.com/aNKi23y.jpeg", "https://i.imgur.com/galBHPI.jpeg", "https://i.imgur.com/IM6nKOW.jpeg", "https://i.imgur.com/cLqecgU.jpeg", "https://i.imgur.com/i9tku5v.jpeg", "https://i.imgur.com/IylLfAf.jpeg", "https://i.imgur.com/kGc1avL.jpeg", "https://i.imgur.com/VmPO9nv.jpeg", "https://i.imgur.com/qFDvuTD.jpeg"];
         
+        let lastWasPhoto = false; // Track if last item was a photo
+        
         function loadRandomItem() {
-            // Randomly decide: article or photo (50/50 chance)
-            const showPhoto = Math.random() < 0.5;
+            let showPhoto;
+            
+            if (lastWasPhoto) {
+                // Last was photo, so this MUST be an article
+                showPhoto = false;
+            } else {
+                // Last was article (or first load), so random choice
+                showPhoto = Math.random() < 0.5;
+            }
             
             const displayArea = document.getElementById('displayArea');
             displayArea.style.opacity = '0';
@@ -313,8 +322,10 @@
             setTimeout(() => {
                 if (showPhoto) {
                     showRandomPhoto();
+                    lastWasPhoto = true;
                 } else {
                     showRandomArticle();
+                    lastWasPhoto = false;
                 }
                 displayArea.style.opacity = '1';
             }, 200);
